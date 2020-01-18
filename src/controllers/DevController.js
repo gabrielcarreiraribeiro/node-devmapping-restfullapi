@@ -21,8 +21,12 @@ const { transformStringInArray } = require('../utils/TransformString')
 const DevController = {
 
     async index(request, response) {
-        const devs = await Dev.find()
-
+        let devs = null
+        try {
+            devs = await Dev.find()
+        } catch (e) {
+            console.log("Erro ao listar todos os devs. Erro: ".concat(e))
+        }
         return response.json(devs)
     },
 
@@ -32,9 +36,14 @@ const DevController = {
         let dev = await Dev.findOne({ github_username })
 
         if (!dev) {
-            const githubApiResponse = await axios.get(`https://api.github.com/users/${github_username}`)
+            let githubApiResponse = null
+            try {
+                githubApiResponse = await axios.get(`https://api.github.com/users/${github_username}`)
+            } catch (e) {
+                console.log("Erro ao pegar os dados do dev naF API do github. Erro: ".concat(e))
+            }
 
-            // Utilizando Destructuring para removar apenas o que será utilizado do retorno da requisição
+            // Utilizando Destructuring para remover apenas o que será utilizado do retorno da requisição
             const { name = login, avatar_url, bio } = githubApiResponse.data
 
             const techsArray = transformStringInArray(techs)
@@ -44,15 +53,19 @@ const DevController = {
                 coordinates: [longitude, latitude]
             }
 
-            // Salvando o dado na base
-            dev = await Dev.create({
-                github_username,
-                name,
-                avatar_url,
-                bio,
-                techs: techsArray,
-                location
-            })
+            try {
+                // Salvando o dado na base
+                dev = await Dev.create({
+                    github_username,
+                    name,
+                    avatar_url,
+                    bio,
+                    techs: techsArray,
+                    location
+                })
+            } catch (e) {
+                console.log("Erro ao salvar o dev. Erro: ".concat(e))
+            }
         } else {
             dev = "User already exists"
         }
@@ -68,9 +81,14 @@ const DevController = {
         const query = { github_username }
         const newValues = { $set: { location, techs: techsArray } }
 
-        // Passando a query no primeiro parâmetro e os novos valores no segundo parâmetro
-        const dev = await Dev.updateOne(query, newValues)
+        let dev = null
+        try {
+            // Passando a query no primeiro parâmetro e os novos valores no segundo parâmetro
+            dev = await Dev.updateOne(query, newValues)
 
+        } catch (e) {
+            console.log("Erro ao atualizar os dados do dev. Erro: 0".concat(e))
+        }
         return response.json(dev)
     },
 
@@ -78,7 +96,11 @@ const DevController = {
 
         params = request.params
 
-        await Dev.deleteOne({ github_username: params.github_username })
+        try {
+            await Dev.deleteOne({ github_username: params.github_username })
+        } catch (e) {
+            console.log("Erro ao deletar o usuário. Erro: ".console.log(e))
+        }
 
         return response.json(`User deleted: ${params.github_username}`)
     }
