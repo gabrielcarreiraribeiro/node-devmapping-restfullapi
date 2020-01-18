@@ -34,6 +34,19 @@ const SearchDevController = {
             }
         })
         return response.json(devs)
+    },
+
+    async indexOne(request, response) {
+        const { github_username } = request.params
+
+        let dev = null
+        try {
+            dev = await Dev.findOne({ github_username })
+        } catch (e) {
+            console.log("Erro ao buscar o Dev específico. Erro: ".concat(e))
+        }
+
+        return response.json(dev)
     }
 }
 

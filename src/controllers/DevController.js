@@ -94,15 +94,15 @@ const DevController = {
 
     async delete(request, response) {
 
-        params = request.params
+        const { github_username } = request.params
 
         try {
-            await Dev.deleteOne({ github_username: params.github_username })
+            await Dev.deleteOne({ github_username })
         } catch (e) {
             console.log("Erro ao deletar o usuário. Erro: ".console.log(e))
         }
 
-        return response.json(`User deleted: ${params.github_username}`)
+        return response.json(`User deleted: ${github_username}`)
     }
 }
 

@@ -32,5 +32,6 @@ routes.delete("/devs/:github_username", DevController.delete)
 
 // SearchDevs routes
 routes.get("/searchDevs", SearchDevController.index)
+routes.get("/searchDevs/:github_username", SearchDevController.indexOne)
 
 module.exports = routes
