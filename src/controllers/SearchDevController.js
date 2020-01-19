@@ -16,8 +16,10 @@ const SearchDevController = {
     async index(request, response) {
 
         const { latitude, longitude, techs } = request.query
+        console.log(techs)
 
         const techsArray = transformStringInArray(techs)
+        console.log(techsArray)
 
         const devs = await Dev.find({
             techs: {
@@ -29,10 +31,11 @@ const SearchDevController = {
                         type: 'Point',
                         coordinates: [longitude, latitude]
                     },
-                    $maxDistance: 10000
+                    $maxDistance: 30000
                 }
             }
         })
+        console.log(devs)
         return response.json(devs)
     },
 
