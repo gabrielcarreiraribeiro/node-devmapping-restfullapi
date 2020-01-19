@@ -1,0 +1,74 @@
+Dicas para criar um projeto utilizando a stack de Node, React e React Native
+
+Instalando node:
+
+	- Baixar Choco no windows ou HomeBrew para instalar
+
+Instalando Yarn:
+	
+	- Instalar pelo Choco ou HomeBrew
+	(Obs.: Colocar comentário "--ignore-dependencies" no final da linha de 	instalação para ignorar dependências - Exemplo: Node, que nós já instalamos)
+
+Instalar Editor de Código (Como visual studio code):
+
+	- Instalar pelo próprio site do mesmo
+
+Extensões interessantes:
+
+	Visual Studio Code:
+	- Dracula Official (Tema para editor de código)
+	- Material Icon Theme (Modifica as pastas e arquivos do seu projeto baseado na finalidade do mesmo)
+	- Import Cost (Informa o tamanho do import/require realizado na aplicação)
+	- ESLint (Informa qualquer erro ou warning no seu código)
+
+	Navegador:
+	- Json Viewer (O navegador transforma o conteúdo da página em Json, quando a estrutura de dados para ser exibida for essa)
+	Mais extensões, visitar vídeo (Configurando o VS Code no canal do youtube da Rocketseat)
+
+Criando o Back-End da aplicação:
+
+	- Criar pasta do projeto e iniciar o projeto em nodejs com 'yarn init -y' (-y serve para ignorar algumas perguntas não interessantes sobre o projeto)
+
+Instalando a dependência "Express":
+
+	- 'yarn add express'
+
+Instalando a dependência "Nodemon": (Serve para nos ajudar a restartar o projeto automaticamente caso haja alguma modificação no código)
+
+	- 'yarn add nodemon -D (-D serve para instalarmos dependências que são apenas de desenvolvimento, fazendo com que essas mesmas não sejam enviadas para 	produção)
+
+Instalando o programa "Insomnia" (Serve para testes de requisições HTTP, igual Postman por exemplo)
+
+	- Instalar pelo próprio site do Insomnia
+
+Configurando uma base de dados na nuvem para utilizarmos na aplicação:
+
+	- Utilizamos uma base de dados mongodb hospedada no site "https://www.mongodb.com/cloud", a maioria das funcionalidades é de graça. Para criar o 		cluster, a base, etc... É só seguir os passos que o próprio site dá.
+
+
+Instalando o plugin "mongoose" para realizarmos a conexão do projeto com a nossa base de dados:
+
+	- 'yarn add mongoose'
+
+Instalando a biblioteca "axios" para a realização de requisições HTTP.
+
+	- 'yarn add axios'
+
+Instalando expo para criação do app mobile
+
+	- 'yarn global add expo-cli'
+
+Colocar após isso a seguinte linha de código
+
+	- 'export PATH="$(yarn global bin):$PATH"'
+
+Criando o projeto com expo
+
+	- 'expo init "Nome da pasta do projeto"'
+
+
+
+
+
+
+
