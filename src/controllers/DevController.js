@@ -3,6 +3,8 @@ const axios = require('axios')
 
 const { transformStringInArray } = require('../utils/TransformString')
 
+const { findConnections, sendMessage } = require("../WebSocket")
+
 /**
  * Sintaxe utilizada para nomenclatura de funções de 'CRUD':
  * 
@@ -63,6 +65,14 @@ const DevController = {
                     techs: techsArray,
                     location
                 })
+
+                const sendSocketMessageTo = findConnections(
+                    { latitude, longitude },
+                    techsArray
+                )
+
+                sendMessage(sendSocketMessageTo, "new-dev", dev)
+
             } catch (e) {
                 console.log("Erro ao salvar o dev. Erro: ".concat(e))
             }
@@ -74,9 +84,17 @@ const DevController = {
     },
 
     async update(request, response) {
-        const { github_username, location, techs } = request.body
+        const { github_username, latitude, longitude, techs } = request.body
 
-        techsArray = transformStringInArray(techs)
+        const techsArray = transformStringInArray(techs)
+
+        const location = {
+            type: 'Point',
+            coordinates: [longitude, latitude]
+        }
+
+        console.log("location here")
+        console.log(location)
 
         const query = { github_username }
         const newValues = { $set: { location, techs: techsArray } }
@@ -84,7 +102,16 @@ const DevController = {
         let dev = null
         try {
             // Passando a query no primeiro parâmetro e os novos valores no segundo parâmetro
-            dev = await Dev.updateOne(query, newValues)
+            await Dev.updateOne(query, newValues)
+
+            devs = await Dev.find()
+
+            const sendSocketMessageTo = findConnections(
+                { latitude, longitude },
+                techsArray
+            )
+            
+            sendMessage(sendSocketMessageTo, "update-dev", devs)
 
         } catch (e) {
             console.log("Erro ao atualizar os dados do dev. Erro: 0".concat(e))
@@ -97,9 +124,24 @@ const DevController = {
         const { github_username } = request.params
 
         try {
+
+            const currentDev = await Dev.findOne({ github_username })
+
+            const longitude = currentDev.location.coordinates[0]
+            const latitude = currentDev.location.coordinates[1]
+            const techsArray = currentDev.techs
+
+            const sendSocketMessageTo = findConnections(
+                { latitude, longitude },
+                techsArray
+            )
+
             await Dev.deleteOne({ github_username })
+            console.log("Removing:")
+            console.log(github_username)
+            sendMessage(sendSocketMessageTo, "remove-dev", github_username)
         } catch (e) {
-            console.log("Erro ao deletar o usuário. Erro: ".console.log(e))
+            console.log("Erro ao deletar o usuário. Erro: ".concat(e))
         }
 
         return response.json(`User deleted: ${github_username}`)

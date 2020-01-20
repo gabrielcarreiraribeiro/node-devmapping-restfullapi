@@ -12,8 +12,16 @@ const routes = require('./routes')
 // Importando o plugin cors, para realizar a segurança de acessibilidade
 const cors = require('cors')
 
+const http = require('http')
+
+const { setupWebSocket } = require('./WebSocket')
+
 // Atribuindo o plugin express a uma constante
 const app = express()
+
+const server = http.Server(app)
+
+setupWebSocket(server)
 
 // Importando o plugin para realizar o acesso à base de dados mongodb
 const mongoose = require('mongoose')
@@ -43,5 +51,5 @@ app.use(cors())
 app.use(routes)
 
 // Configurando a porta que o projeto utilizará
-app.listen(3001)
+server.listen(3001)
 
