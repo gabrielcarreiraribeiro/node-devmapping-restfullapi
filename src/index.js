@@ -52,5 +52,5 @@ app.use(cors())
 app.use(routes)
 
 // Configurando a porta que o projeto utilizará
-server.listen(3001)
+server.listen(process.env.PORT || 3001)
 
