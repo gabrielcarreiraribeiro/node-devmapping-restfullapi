@@ -21,6 +21,7 @@ const app = express()
 
 const server = http.Server(app)
 
+
 setupWebSocket(server)
 
 // Importando o plugin para realizar o acesso à base de dados mongodb
